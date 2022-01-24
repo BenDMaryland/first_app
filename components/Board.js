@@ -2,7 +2,9 @@ import { View, Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
 
 const Board = ({ allWords }) => {
-const [HorzArray, setHorzArray] = useState();
+    const [HorzArray, setHorzArray] = useState();
+    const [LongestVertWords, setLongesVertWords] = useState(0);
+    const [LongestHorzWordLength, setLongestHorzWordLength] = useState(0);
     const [VertArray, setVertArray] = useState();
     let word = ''
     let num = 0
@@ -11,7 +13,7 @@ const [HorzArray, setHorzArray] = useState();
 
     useEffect(() => {
         let Vertical = allWords.slice(attempt, attempt + 3)
-        console.log(attempt)
+        // console.log(attempt)
 
         for (let letterPos = 0; letterPos < Vertical.length; letterPos++) {
             for (let i = 0; i < Vertical.length; i++) {
@@ -20,7 +22,7 @@ const [HorzArray, setHorzArray] = useState();
                 word = word + letter
                 num++
             }
-            console.log("the chars are ", word)
+            // console.log("the chars are ", word)
             let crossWord = allWords.find(oneWord => oneWord.startsWith(word))
 
             if (crossWord === undefined) {
@@ -41,56 +43,29 @@ const [HorzArray, setHorzArray] = useState();
                 word = ''
             }
         }
-        console.log(attempt)
-        console.log('cross array is ', crossArray)
-        console.log('reg array is', Vertical)
+        // console.log(attempt)
+        // console.log('cross array is ', crossArray)
+        // console.log('reg array is', Vertical)
         setHorzArray(crossArray)
         setVertArray(Vertical)
 
     }, []);
-    if (!VertArray) return null 
-
-console.log(VertArray)
-console.log(HorzArray)
-//     function getBoard(attempt =0) {
-// //         let Vertical = allWords.slice(attempt, attempt + 3)
-// // console.log(attempt)
-
-// //         for (let letterPos = 0; letterPos < Vertical.length; letterPos++) {
-// //             for (let i = 0; i < Vertical.length; i++) {
-
-// //                 let letter = Vertical[i][letterPos]
-// //                 word = word + letter
-// //                 num++
-// //             }
-// //             console.log("the chars are ", word)
-// //             let crossWord = allWords.find(oneWord => oneWord.startsWith(word))
-
-// //             if (crossWord === undefined) {
-// //                 attempt = attempt + 3
-// //                 Vertical = allWords.slice(attempt, attempt + 3)
-// //                 word = ''
-// //                 i = -1
-// //                 letter = ''
-// //                 num = -1
-// //                 letterPos = -1
-// //                 crossWord = ''
-// //                 crossArray = []
-              
-// //             }
-// //             else {
-// //                 crossArray.push(crossWord)
-
-// //                 word = ''
-// //             }
-// //         }
-// //         console.log(attempt)
-// //         console.log('cross array is ', crossArray)
-// //         console.log('reg array is', Vertical)
-// // setarray(crossArray)
-//     }
 
 
+
+        for (let i = 0; i < VertArray.length; i++) {
+            console.log("dddd")
+            VertArray[i].length > LongestVertWords ? setLongesVertWords(VertArray[i].length) : null
+            HorzArray[i].length > LongestHorzWordLength ? setLongestHorzWordLength(HorzArray[i].length) : null
+        }
+
+    
+    if (!VertArray) return null
+
+    console.log(VertArray)
+    console.log(HorzArray)
+    console.log('horz', LongestHorzWordLength)
+    console.log("vert", LongestVertWords)
 
 
 
