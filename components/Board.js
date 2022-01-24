@@ -6,11 +6,18 @@ const Board = ({ allWords }) => {
     const [LongestVertWords, setLongesVertWords] = useState(0);
     const [LongestHorzWordLength, setLongestHorzWordLength] = useState(0);
     const [VertArray, setVertArray] = useState();
+    const [BoardState, setBoardState] = useState([]);
     let word = ''
     let num = 0
     let crossArray = []
     let attempt = 0
+    let boardSolution = []
+    let cell = {
+        x: "",
+        y: '',
+        string: ""
 
+    }
     useEffect(() => {
         let Vertical = allWords.slice(attempt, attempt + 3)
         // console.log(attempt)
@@ -52,15 +59,14 @@ const Board = ({ allWords }) => {
     }, []);
 
 
-
-        for (let i = 0; i < VertArray.length; i++) {
-            console.log("dddd")
-            VertArray[i].length > LongestVertWords ? setLongesVertWords(VertArray[i].length) : null
-            HorzArray[i].length > LongestHorzWordLength ? setLongestHorzWordLength(HorzArray[i].length) : null
-        }
-
-    
     if (!VertArray) return null
+
+    for (let i = 0; i < HorzArray.length; i++) {
+        console.log("dddd")
+        VertArray[i].length > LongestVertWords ? setLongesVertWords(VertArray[i].length) : null
+        HorzArray[i].length > LongestHorzWordLength ? setLongestHorzWordLength(HorzArray[i].length) : null
+    }
+
 
     console.log(VertArray)
     console.log(HorzArray)
@@ -68,6 +74,14 @@ const Board = ({ allWords }) => {
     console.log("vert", LongestVertWords)
 
 
+    for (let i = 0; i < HorzArray.length; i++) {
+        let array = HorzArray[i].split('')
+        console.log(array)
+        boardSolution.push(array.map((str, index) => cell = { y: i, x: index, string: str }))
+
+        console.log('solution is ', boardSolution)
+        console.log('current cell is ', cell)
+    }
 
 
     return (
