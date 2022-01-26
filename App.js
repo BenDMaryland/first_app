@@ -22,8 +22,9 @@ if(!allWords)return null
   return (
     <View style={styles.container}>
         <Header />
-      <Board allWords={allWords}/>
       <MainBody />
+      <Board allWords={allWords}/>
+ 
     </View>
   );
 }

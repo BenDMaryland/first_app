@@ -1,6 +1,6 @@
-import { View, Text } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import React, { useEffect, useState } from 'react';
-
+import Cell from './Cell';
 const Board = ({ allWords }) => {
     const [HorzArray, setHorzArray] = useState();
     const [LongestVertWords, setLongesVertWords] = useState(0);
@@ -21,10 +21,8 @@ const Board = ({ allWords }) => {
     useEffect(() => {
         let Vertical = allWords.slice(attempt, attempt + 3)
         // console.log(attempt)
-
         for (let letterPos = 0; letterPos < Vertical.length; letterPos++) {
             for (let i = 0; i < Vertical.length; i++) {
-
                 let letter = Vertical[i][letterPos]
                 word = word + letter
                 num++
@@ -85,11 +83,37 @@ const Board = ({ allWords }) => {
 
 
     return (
-        <View>
 
-            <Text>fff</Text>
+        <View >
+            {boardSolution.map(array => {
+         
+                return (
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                        {array.map(cell => {
+                            if (cell == undefined) return null
+                    
+                            return (
+                                <Cell props={cell} />
+                               )
+                        })
+
+                        }
+                        <Text style={{ alignSelf: 'flex-end' }}></Text>
+                    </View>
+
+
+                )
+            }
+
+            )}
+
+
+
         </View>
+
+
     );
 };
 
 export default Board;
+
