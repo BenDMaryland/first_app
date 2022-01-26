@@ -86,15 +86,15 @@ const Board = ({ allWords }) => {
 
         <View >
             {boardSolution.map(array => {
-         
+
                 return (
                     <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                         {array.map(cell => {
                             if (cell == undefined) return null
-                    
+
                             return (
                                 <Cell props={cell} />
-                               )
+                            )
                         })
 
                         }
@@ -107,8 +107,9 @@ const Board = ({ allWords }) => {
 
             )}
 
-
-
+            <Text>Vertical one is {VertArray[0]}</Text>
+            <Text>Vertical two is {VertArray[1]}</Text>
+            <Text>Vertical three is {VertArray[2]}</Text>
         </View>
 
 

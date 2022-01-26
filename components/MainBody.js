@@ -20,11 +20,11 @@ function voicegrab(e){
             <TextInput 
                 placeholder="Type here to translate!"
             onChangeText={text => setName(text)} />
-            <Image source={{
+            {/* <Image source={{
                 width: 200,
                 height: 300,
                 uri: "https://picsum.photos/200/300"
-            }} />
+            }} /> */}
       </View>
     );
   }

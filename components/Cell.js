@@ -11,7 +11,7 @@ console.log("props props is ", props.props)
 
     return (
         <View  key={Math.random} style={styles.container}>
-            <Text>{props.props.string}</Text>
+            <Text style={{ fontWeight: 'bold'}}>{props.props.string}</Text>
         </View>
     )
 }
@@ -25,6 +25,8 @@ const styles = StyleSheet.create({
         width: 30,
         height: 30,
         borderBottomWidth: 3,
-    flexDirection: 'row'
+    flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 });
