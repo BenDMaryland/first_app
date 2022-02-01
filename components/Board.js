@@ -8,6 +8,7 @@ const Board = ({ allWords }) => {
     const [VertArray, setVertArray] = useState();
     const [HorzDef, setHorzDef] = useState([]);
     const [BoardState, setBoardState] = useState([]);
+    const [TestState, setTestState] = useState();
     let word = ''
     let num = 0
     let crossArray = []
@@ -59,23 +60,27 @@ const Board = ({ allWords }) => {
 
 
     useEffect(() => {
+async function grabData(){
         if (HorzArray) {
             let array = []
-            for (let i = 0; i < HorzArray.length; i++) {
-                fetch(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${HorzArray[i]}?key=03aa2c96-7380-4041-afb8-fd2d579f195c`)
-                    .then(r => r.json())
-                    .then(data => array.push(data))
-                    .catch(error => console.log("Hi ", error))
-                    console.log("array is", array)
-                    console.log(HorzDef)
-                    console.log(array.length)
-                 if (array.length ==3){ setHorzDef(array)}
-                 
+                if(HorzDef.length === 0){
+                for (let i = 0; i < HorzArray.length; i++) {
+                    const data = await   fetch(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${HorzArray[i]}?key=03aa2c96-7380-4041-afb8-fd2d579f195c`)
+                    const json = await data.json();
+                    array.push(json)
+                        console.log("array is", array, "length is ", array.length)
+                    if (array.length ==3){ setHorzDef(array)}
+                    }
 
             }
         }
+}
+        grabData()
     }, [HorzArray,VertArray]);
 
+    useEffect(() => {
+        console.log("the def is", HorzDef)
+    }, [HorzDef]);
 
 
     if (!VertArray) return null
@@ -151,7 +156,7 @@ const Board = ({ allWords }) => {
             <Text>Vertical one is {VertArray[0]}</Text>
             <Text>Vertical two is {VertArray[1]}</Text>
             <Text>Vertical three is {VertArray[2]}</Text>
-          {HorzDef.length ==3?   <Text>Horx def is 1{HorzDef[0].shortdef}</Text> : null}
+          {HorzDef.length ==3?   <Text>Horx def is 1{HorzDef[1].shortdef}</Text> : null}
 
 
         </View>
