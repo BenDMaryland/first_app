@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Cell from './Cell';
 const Board = ({ allWords }) => {
@@ -7,6 +7,7 @@ const Board = ({ allWords }) => {
     const [LongestHorzWordLength, setLongestHorzWordLength] = useState(0);
     const [VertArray, setVertArray] = useState();
     const [HorzDef, setHorzDef] = useState([]);
+    const [VertDef, setVertDef] = useState([]);
     const [BoardState, setBoardState] = useState([]);
     const [TestState, setTestState] = useState();
     let word = ''
@@ -79,7 +80,29 @@ async function grabData(){
     }, [HorzArray,VertArray]);
 
     useEffect(() => {
-        console.log("the def is", HorzDef)
+        console.log("okay VertArray is ", VertArray)
+        async function grabData() {
+            if (VertArray) {
+                let array = []
+                if (VertDef.length === 0) {
+                    for (let i = 0; i < VertArray.length; i++) {
+                        const data = await fetch(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${VertArray[i]}?key=03aa2c96-7380-4041-afb8-fd2d579f195c`)
+                        const json = await data.json();
+                        array.push(json)
+                        console.log("Alright array is ", array )
+
+                        if (array.length == 3) { setVertDef(array) }
+                    }
+
+                }
+            }
+        }
+        grabData()
+    }, [HorzArray, VertArray]);
+
+    useEffect(() => {
+console.log("Vert def is ", VertDef)
+        console.log("Horx def is ", HorzDef)
     }, [HorzDef]);
 
 
@@ -123,12 +146,11 @@ async function grabData(){
     }
 
 
-    console.log("the def is", HorzDef)
     
     
     return (
 
-        <View >
+        <ScrollView >
             {boardSolution.map((array, index) => {
                 return (
                     <View key={index} style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
@@ -152,14 +174,25 @@ async function grabData(){
             <Text>Horizontal  one is {HorzArray[0]}</Text>
             <Text>Horizontal two is {HorzArray[1]}</Text>
             <Text>Horizontal three is {HorzArray[2]}</Text>
-
+            <Text></Text>
             <Text>Vertical one is {VertArray[0]}</Text>
             <Text>Vertical two is {VertArray[1]}</Text>
             <Text>Vertical three is {VertArray[2]}</Text>
-          {HorzDef.length ==3?   <Text>Horx def is 1{HorzDef[1].shortdef}</Text> : null}
+            <Text></Text>
+            {HorzDef.length == 3 ?  HorzDef[0].length != 20 ?      <Text>Horx def is 1:{HorzDef[0][0].shortdef[0]}</Text>: null  : null}
+            <Text></Text>
+            {HorzDef.length == 3 ? HorzDef[1].length != 20 ?     <Text>Horx def is 2: {HorzDef[1][0].shortdef[0]}</Text> : null : null}
+            <Text></Text>
+            {HorzDef.length == 3 ? HorzDef[2].length != 20 ?   <Text>Horx def is 3; {HorzDef[2][0].shortdef[0]}</Text> : null : null}
+            <Text></Text>
 
-
-        </View>
+            {VertDef.length == 3 ? VertDef[0].length != 20 ?     <Text>VertDef def is 1:{VertDef[0][0].shortdef[0]}</Text> : null : null}
+            <Text></Text>
+            {VertDef.length == 3 ? VertDef[1].length != 20 ?     <Text>VertDef def is 2: {VertDef[1][0].shortdef[0]}</Text> : null : null}
+            <Text></Text>
+            {VertDef.length == 3 ? VertDef[2].length != 20 ?      <Text>VertDef def is 3; {VertDef[2][0].shortdef[0]}</Text> : null : null}
+            <Text></Text>
+        </ScrollView>
 
 
     );
