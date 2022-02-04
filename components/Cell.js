@@ -1,17 +1,19 @@
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 
-const Cell = (props) => {
+const Cell = ({ cell, showWords }) => {
+const [cellInfo, setcellInfo] = useState(cell);
 
-    if (props.props.string === "+") {return (
-        <View style={styles.empty}>
-        <Text style={{ fontWeight: 'bold' }}></Text>
-    </View>)
-}
+    if (cell.string === "+"||cell.show===false) {
+        return (
+            <View style={styles.empty}>
+                <Text style={{ fontWeight: 'bold' }}></Text>
+            </View>)
+    }
 
     return (
-        <View   style={styles.container}>
-            <Text style={{ fontWeight: 'bold'}}>{props.props.string}</Text>
+        <View style={styles.container}>
+            <Text onPress={() => showWords(cell)} style={{ fontWeight: 'bold' }}> {cell.string}</Text>
         </View>
     )
 }
@@ -24,16 +26,16 @@ const styles = StyleSheet.create({
         borderWidth: 3,
         width: 30,
         height: 30,
-    flexDirection: 'row',
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
     },
 
     empty: {
-       
+
         width: 30,
         height: 30,
-   
+
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'

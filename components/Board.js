@@ -18,9 +18,10 @@ const Board = ({ allWords }) => {
     let cell = {
         x: "",
         y: '',
-        string: ""
-
+        string: "",
+        show: true
     }
+
     /// Here we look for compatable cross words
     useEffect(() => {
         let Vertical = allWords.slice(attempt, attempt + 3)
@@ -59,6 +60,22 @@ const Board = ({ allWords }) => {
         setVertArray(Vertical)
 
     }, []);
+
+    function showWords(e){
+        console.log("____________________________________")
+        console.log("board state is touched ", BoardState)
+            console.log("cell is",e)
+        setBoardState(BoardState=>  {  
+         for(let i =0; i < BoardState.length; i++){
+
+          if(i ===e.y)  BoardState[i].map(word => {  return {  ...word,   show: false  }  }   )
+           else  BoardState[i]
+        }
+        })
+        
+console.log("board state is touched ",BoardState)
+
+    }
 
     /// Here we grab the definition for words
     useEffect(() => {
@@ -107,15 +124,18 @@ const Board = ({ allWords }) => {
     }, [HorzDef]);
 
 
-    if (!VertArray) return null
 
 
+    useEffect(() => {
+        if (!VertArray) return null
     for (let i = 0; i < HorzArray.length; i++) {
         VertArray[i].length > LongestVertWords ? setLongesVertWords(VertArray[i].length) : null
         HorzArray[i].length > LongestHorzWordLength ? setLongestHorzWordLength(HorzArray[i].length) : null
 
 
     }
+
+    }, [VertArray]);
 
 
     // console.log(VertArray)
@@ -124,13 +144,13 @@ const Board = ({ allWords }) => {
     // console.log("vert", LongestVertWords)
 
 
-
-
+    useEffect(() => {
+        if (!VertArray) return null
     for (let i = 0; i < HorzArray.length; i++) {
         let array = HorzArray[i].split('')
 
-        boardSolution.push(array.map((str, index) => cell = { y: i, x: index, string: str }))
-
+        boardSolution.push(array.map((str, index) => cell = { y: i, x: index, string: str, show:true }))
+       
     }
 
     for (let i = 3; i < LongestVertWords; i++) {
@@ -139,16 +159,18 @@ const Board = ({ allWords }) => {
         let str2 = VertArray[1][i] ? VertArray[1][i] : "+"
         let str3 = VertArray[2][i] ? VertArray[2][i] : "+"
         let str = str1 + str2 + str3
-
+        console.log(" in use effect Board state is", BoardState)
+        console.log("in useffect Board solution is", boardSolution)
 
         let arr = str.split('')
-        boardSolution.push(arr.map((str, index) => cell = { y: i, x: index, string: str }))
+        boardSolution.push(arr.map((str, index) => cell = { y: i, x: index, string: str, show: true  }))
+setBoardState(boardSolution)
 
-    }
-
-
-
-
+    }}
+, [HorzArray, VertArray, VertDef])
+    console.log("Board state is",  BoardState)
+    console.log("Board solution is", boardSolution)
+if(!VertArray) return null
     return (
 
         <ScrollView >
@@ -166,7 +188,7 @@ const Board = ({ allWords }) => {
                     <Text style={{ fontWeight: 'bold' }}>3</Text>
                 </View>
             </View>
-            {boardSolution.map((array, index) => {
+            {BoardState.map((array, index) => {
                 return (
                     <View key={index} style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                         <View style={styles.container}>
@@ -178,7 +200,7 @@ const Board = ({ allWords }) => {
                             if (cell == undefined) return null
 
                             return (
-                                <Cell key={index} props={cell} />
+                                <Cell key={index} cell={cell} showWords={showWords} />
                             )
                         })
 
