@@ -64,16 +64,13 @@ const Board = ({ allWords }) => {
     function showWords(e){
         console.log("____________________________________")
         console.log("board state is touched ", BoardState)
-            console.log("cell is",e)
-        setBoardState(BoardState=>  {  
-         for(let i =0; i < BoardState.length; i++){
+      setBoardState( BoardState.map( (words,index)=>   {
+            if (index == e.y) return words.map(word => { return { ...word, show: false }} )
+            else return words
+        } ))
+    
+        //BoardState[i].map(word => {  return {  ...word,   show: false  } 
 
-          if(i ===e.y)  BoardState[i].map(word => {  return {  ...word,   show: false  }  }   )
-           else  BoardState[i]
-        }
-        })
-        
-console.log("board state is touched ",BoardState)
 
     }
 
@@ -86,8 +83,7 @@ console.log("board state is touched ",BoardState)
                     for (let i = 0; i < HorzArray.length; i++) {
                         const data = await fetch(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${HorzArray[i]}?key=03aa2c96-7380-4041-afb8-fd2d579f195c`)
                         const json = await data.json();
-                        array.push(json)
-                        console.log("array is", array, "length is ", array.length)
+                        array.push(json)   
                         if (array.length == 3) { setHorzDef(array) }
                     }
 
@@ -98,7 +94,6 @@ console.log("board state is touched ",BoardState)
     }, [HorzArray, VertArray]);
 
     useEffect(() => {
-        console.log("okay VertArray is ", VertArray)
         async function grabData() {
             if (VertArray) {
                 let array = []
@@ -159,18 +154,15 @@ console.log("board state is touched ",BoardState)
         let str2 = VertArray[1][i] ? VertArray[1][i] : "+"
         let str3 = VertArray[2][i] ? VertArray[2][i] : "+"
         let str = str1 + str2 + str3
-        console.log(" in use effect Board state is", BoardState)
-        console.log("in useffect Board solution is", boardSolution)
-
         let arr = str.split('')
         boardSolution.push(arr.map((str, index) => cell = { y: i, x: index, string: str, show: true  }))
 setBoardState(boardSolution)
 
     }}
 , [HorzArray, VertArray, VertDef])
-    console.log("Board state is",  BoardState)
-    console.log("Board solution is", boardSolution)
+
 if(!VertArray) return null
+    if (!VertDef) return null
     return (
 
         <ScrollView >

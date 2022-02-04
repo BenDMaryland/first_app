@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 const Cell = ({ cell, showWords }) => {
 const [cellInfo, setcellInfo] = useState(cell);
 
-    if (cell.string === "+"||cell.show===false) {
+    if (cell.string === "+") {
         return (
             <View style={styles.empty}>
                 <Text style={{ fontWeight: 'bold' }}></Text>
@@ -13,7 +13,7 @@ const [cellInfo, setcellInfo] = useState(cell);
 
     return (
         <View style={styles.container}>
-            <Text onPress={() => showWords(cell)} style={{ fontWeight: 'bold' }}> {cell.string}</Text>
+            <Text onPress={() => showWords(cell)} style={{ fontWeight: 'bold' }}> {cell.show?  cell.string: ""}</Text>
         </View>
     )
 }
