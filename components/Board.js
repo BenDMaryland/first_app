@@ -21,6 +21,7 @@ const Board = ({ allWords }) => {
         string: ""
 
     }
+    /// Here we look for compatable cross words
     useEffect(() => {
         let Vertical = allWords.slice(attempt, attempt + 3)
         // console.log(attempt)
@@ -32,7 +33,7 @@ const Board = ({ allWords }) => {
             }
             // console.log("the chars are ", word)
             let crossWord = allWords.find(oneWord => oneWord.startsWith(word))
-
+            /// If we don't find enough we reset the list
             if (crossWord === undefined) {
                 attempt = attempt + 3
                 Vertical = allWords.slice(attempt, attempt + 3)
@@ -47,7 +48,7 @@ const Board = ({ allWords }) => {
             }
             else {
                 crossArray.push(crossWord)
-
+                //
                 word = ''
             }
         }
@@ -59,25 +60,25 @@ const Board = ({ allWords }) => {
 
     }, []);
 
-
+    /// Here we grab the definition for words
     useEffect(() => {
-async function grabData(){
-        if (HorzArray) {
-            let array = []
-                if(HorzDef.length === 0){
-                for (let i = 0; i < HorzArray.length; i++) {
-                    const data = await   fetch(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${HorzArray[i]}?key=03aa2c96-7380-4041-afb8-fd2d579f195c`)
-                    const json = await data.json();
-                    array.push(json)
+        async function grabData() {
+            if (HorzArray) {
+                let array = []
+                if (HorzDef.length === 0) {
+                    for (let i = 0; i < HorzArray.length; i++) {
+                        const data = await fetch(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${HorzArray[i]}?key=03aa2c96-7380-4041-afb8-fd2d579f195c`)
+                        const json = await data.json();
+                        array.push(json)
                         console.log("array is", array, "length is ", array.length)
-                    if (array.length ==3){ setHorzDef(array)}
+                        if (array.length == 3) { setHorzDef(array) }
                     }
 
+                }
             }
         }
-}
         grabData()
-    }, [HorzArray,VertArray]);
+    }, [HorzArray, VertArray]);
 
     useEffect(() => {
         console.log("okay VertArray is ", VertArray)
@@ -89,7 +90,7 @@ async function grabData(){
                         const data = await fetch(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${VertArray[i]}?key=03aa2c96-7380-4041-afb8-fd2d579f195c`)
                         const json = await data.json();
                         array.push(json)
-                        console.log("Alright array is ", array )
+                        console.log("Alright array is ", array)
 
                         if (array.length == 3) { setVertDef(array) }
                     }
@@ -101,7 +102,7 @@ async function grabData(){
     }, [HorzArray, VertArray]);
 
     useEffect(() => {
-console.log("Vert def is ", VertDef)
+        console.log("Vert def is ", VertDef)
         console.log("Horx def is ", HorzDef)
     }, [HorzDef]);
 
@@ -146,14 +147,33 @@ console.log("Vert def is ", VertDef)
     }
 
 
-    
-    
+
+
     return (
 
         <ScrollView >
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap'} } >
+                <View style={styles.container}>
+                    <Text style={{ fontWeight: 'bold' }}>0</Text>
+                </View>
+                <View style={styles.container}>
+                    <Text style={{ fontWeight: 'bold' }}>1</Text>
+                </View>
+                <View style={styles.container}>
+                    <Text style={{ fontWeight: 'bold' }}>2</Text>
+                </View>
+                <View style={styles.container}>
+                    <Text style={{ fontWeight: 'bold' }}>3</Text>
+                </View>
+            </View>
             {boardSolution.map((array, index) => {
                 return (
                     <View key={index} style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                        <View style={styles.container}>
+                            <Text style={{ fontWeight: 'bold' }}>{   index< 3? index +1:""}  </Text>
+                        </View>
+
+
                         {array.map((cell, index) => {
                             if (cell == undefined) return null
 
@@ -179,18 +199,18 @@ console.log("Vert def is ", VertDef)
             <Text>Vertical two is {VertArray[1]}</Text>
             <Text>Vertical three is {VertArray[2]}</Text>
             <Text></Text>
-            {HorzDef.length == 3 ?  HorzDef[0].length != 20 ?      <Text>Horx def is 1:{HorzDef[0][0].shortdef[0]}</Text>: null  : null}
+            {HorzDef.length == 3 ? HorzDef[0].length != 20 ? <Text>Horx def is 1:{HorzDef[0][0].shortdef[0]}</Text> : null : null}
             <Text></Text>
-            {HorzDef.length == 3 ? HorzDef[1].length != 20 ?     <Text>Horx def is 2: {HorzDef[1][0].shortdef[0]}</Text> : null : null}
+            {HorzDef.length == 3 ? HorzDef[1].length != 20 ? <Text>Horx def is 2: {HorzDef[1][0].shortdef[0]}</Text> : null : null}
             <Text></Text>
-            {HorzDef.length == 3 ? HorzDef[2].length != 20 ?   <Text>Horx def is 3; {HorzDef[2][0].shortdef[0]}</Text> : null : null}
+            {HorzDef.length == 3 ? HorzDef[2].length != 20 ? <Text>Horx def is 3; {HorzDef[2][0].shortdef[0]}</Text> : null : null}
             <Text></Text>
 
-            {VertDef.length == 3 ? VertDef[0].length != 20 ?     <Text>VertDef def is 1:{VertDef[0][0].shortdef[0]}</Text> : null : null}
+            {VertDef.length == 3 ? VertDef[0].length != 20 ? <Text>VertDef def is 1:{VertDef[0][0].shortdef[0]}</Text> : null : null}
             <Text></Text>
-            {VertDef.length == 3 ? VertDef[1].length != 20 ?     <Text>VertDef def is 2: {VertDef[1][0].shortdef[0]}</Text> : null : null}
+            {VertDef.length == 3 ? VertDef[1].length != 20 ? <Text>VertDef def is 2: {VertDef[1][0].shortdef[0]}</Text> : null : null}
             <Text></Text>
-            {VertDef.length == 3 ? VertDef[2].length != 20 ?      <Text>VertDef def is 3; {VertDef[2][0].shortdef[0]}</Text> : null : null}
+            {VertDef.length == 3 ? VertDef[2].length != 20 ? <Text>VertDef def is 3; {VertDef[2][0].shortdef[0]}</Text> : null : null}
             <Text></Text>
         </ScrollView>
 
@@ -200,3 +220,28 @@ console.log("Vert def is ", VertDef)
 
 export default Board;
 
+
+
+const styles = StyleSheet.create({
+    container: {
+        borderWidth: 3,
+        width: 30,
+        height: 30,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
+    empty: {
+
+        width: 30,
+        height: 30,
+
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
+
+
+});
