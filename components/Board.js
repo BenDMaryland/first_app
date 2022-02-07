@@ -62,8 +62,8 @@ const Board = ({ allWords }) => {
     }, []);
 
     function showWords(e){
-        console.log("____________________________________")
-        console.log("board state is touched ", BoardState)
+        // console.log("____________________________________")
+        // console.log("board state is touched ", BoardState)
       setBoardState( BoardState.map( (words,index)=>   {
             if (index == e.y) return words.map(word => { return { ...word, show: false }} )
             else return words
